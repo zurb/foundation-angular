@@ -1,0 +1,15 @@
+{
+  "name": "foundation-angular",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "gulp-clean": "^0.3.1",
+    "gulp-front-matter": "^1.0.0",
+    "gulp-vartree": "0.0.8",
+    "gulp-webserver": "^0.8.1"
+  }
+}

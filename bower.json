@@ -1,0 +1,8 @@
+{
+  "name": "Foundation Angular",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "~1.2.25",
+    "ui-router": "~0.2.11"
+  }
+}
