@@ -3,17 +3,12 @@ var app = angular.module('application', ['ui.router'])
 
   $urlProvider.otherwise('/');
 
-  $stateProvider
-    .state('home', {
-      url: '/',
-      templateUrl: 'templates/home.html'
-    })
-    .state('page', {
-      url: '/page',
-      templateUrl: 'templates/page.html'
-    })
-    .state('page.sub', {
-      url: '/sub',
-      templateUrl: 'templates/page_child.html'
+    angular.forEach(dynamicRoutes, function(page) {
+      var state = {};
+      state.url = page.url;
+      state.templateUrl = page.path;
+      state.parent = page.parent ? page.parent : '';
+      $stateProvider.state(page.name, state);
     });
 }]);
+

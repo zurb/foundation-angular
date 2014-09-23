@@ -3,7 +3,8 @@ var gulp        = require('gulp'),
     server      = require('gulp-develop-server'),
     frontMatter = require('gulp-front-matter'),
     path        = require('path')
-    through     = require('through2');
+    through     = require('through2')
+    fs          = require('fs');
 
 gulp.task('server:start', ['front-matter'], function() {
   server.listen( { path: 'app.js' });
@@ -19,7 +20,7 @@ gulp.task('copy', ['clean'], function() {
 });
 
 gulp.task('front-matter', ['copy'], function() {
-  var root = [];
+  var config = [];
 
   gulp.src('./client/templates/*.html')
     .pipe(frontMatter({
@@ -27,21 +28,29 @@ gulp.task('front-matter', ['copy'], function() {
       remove: true
     }))
     .pipe(through.obj(function(file, enc, callback) {
-      page = file.meta;
+      var page = file.meta;
 
       //path normalizing
-      relativePath = path.relative(__dirname + path.sep + 'client', file.path);
+      var relativePath = path.relative(__dirname + path.sep + 'client', file.path);
       page.path = relativePath.split(path.sep).join('/');
 
-      root.push(page);
+      config.push(page);
 
       this.push(file);
       return callback();
     }))
     .pipe(gulp.dest('build/templates'))
+    .on('end', function() {
+      var appPath = ['build', 'assets', 'js', 'app.js'];
+      fs.readFile(appPath.join(path.sep), function(err, data) {
+        fs.writeFile(appPath.join(path.sep), 'var dynamicRoutes = ' + JSON.stringify(config) + '; \n' + data, function(err, d) {
+          if (err) return console.log(err);
+        });
+      })
+    });
   ;
 });
 
 gulp.task('default', ['copy', 'front-matter', 'server:start'], function() {
-  gulp.watch('client/**/*.*', ['copy', server.restart]);
+  gulp.watch('client/**/*.*', ['copy', 'front-matter', server.restart]);
 });
