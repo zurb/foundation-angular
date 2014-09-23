@@ -12,4 +12,8 @@ var app = angular.module('application', ['ui.router'])
       url: '/page',
       templateUrl: 'templates/page.html'
     })
-}])
+    .state('page.sub', {
+      url: '/sub',
+      templateUrl: 'templates/page_child.html'
+    });
+}]);
