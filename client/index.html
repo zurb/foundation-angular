@@ -4,12 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Foundation Angular</title>
+    <link rel="stylesheet" href="/bower_components/foundation/css/foundation.css" />
     <link rel="stylesheet" href="/assets/css/app.css" />
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/ui-router/release/angular-ui-router.js"></script>
     <script src="/assets/js/app.js"></script>
   </head>
   <body>
-    <div ui-view></div>
+    <div class="contain-to-grid">
+      <nav class="top-bar">
+        <ul class="title-area">
+          <li class="name">
+            <h1><a ui-sref="home">Angular</a></h1>
+          </li>
+        </ul>
+
+        <section class="top-bar-section">
+          <ul class="right">
+            <li><a ui-sref="home">Home</a></li>
+            <li><a ui-sref="page">Page</a></li>
+            <li><a ui-sref="page.subpage">Subpage</a></li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+    <div class="row">
+      <div ui-view></div>
+    </div>
   </body>
 </html>

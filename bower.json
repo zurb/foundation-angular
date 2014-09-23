@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "angular": "~1.2.25",
-    "ui-router": "~0.2.11"
+    "ui-router": "~0.2.11",
+    "foundation": "~5.4.4"
   }
 }
