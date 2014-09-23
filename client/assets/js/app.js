@@ -8,6 +8,8 @@ var app = angular.module('application', ['ui.router'])
       state.url = page.url;
       state.templateUrl = page.path;
       state.parent = page.parent ? page.parent : '';
+      state.controller = page.controller ? page.controller : '';
+
       $stateProvider.state(page.name, state);
     });
 }]);
