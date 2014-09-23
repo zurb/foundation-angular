@@ -1,19 +1,13 @@
 var gulp = require('gulp'),
-    webserver = require('gulp-webserver'),
-    clean = require('gulp-clean');
+    rimraf = require('rimraf'),
+    server = require('gulp-develop-server');
 
-gulp.task('webserver', function() {
-  gulp.src('')
-    .pipe(webserver({
-      livereload: true,
-      open: true,
-      fallback: '/build/index.html' //html5mode
-    }));
+gulp.task('server:start', ['copy'], function() {
+  server.listen( { path: 'app.js' });
 });
 
-gulp.task('clean', function() {
-  gulp.src('build', { read: false })
-    .pipe(clean());
+gulp.task('clean', function(cb) {
+  rimraf('./build', cb);
 });
 
 gulp.task('copy', ['clean'], function() {
@@ -21,6 +15,6 @@ gulp.task('copy', ['clean'], function() {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('default', ['copy', 'webserver'], function() {
-  gulp.watch('client/**/*.*', ['copy', 'webserver']);
+gulp.task('default', ['copy', 'server:start'], function() {
+  gulp.watch('client/**/*.*', ['copy', server.restart]);
 });
