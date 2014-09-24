@@ -1,6 +1,11 @@
 ---
 name: mail.inbox
 url: /inbox
+emails:
+  - Brandon
+  - Antonin
+  - Geoff
+  - James
 ---
 <div>
   <table width="100%">
@@ -12,20 +17,10 @@ url: /inbox
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Person 1</td>
-        <td>Sample Subject</td>
-        <td><a ui-sref="mail.email({ id: 1 })" class="button small">Go read</a></td>
-      </tr>
-      <tr>
-        <td>Person 2</td>
-        <td>Sample Subject</td>
-        <td><a ui-sref="mail.email({ id: 2 })" class="button small">Go read</a></td>
-      </tr>
-      <tr>
-        <td>Person 3</td>
-        <td>Sample Subject</td>
-        <td><a ui-sref="mail.email({ id: 3 })" class="button small">Go read</a></td>
+      <tr ng-repeat="message in vars.emails">
+        <td>{{ message }}</td>
+        <td>Sample Subject for {{ message }}</td>
+        <td><a ui-sref="mail.email({ id: message })" class="button small">Go read</a></td>
       </tr>
     </tbody>
   </table>

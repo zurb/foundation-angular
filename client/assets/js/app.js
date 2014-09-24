@@ -8,13 +8,14 @@ var app = angular.module('application', ['ui.router'])
       state.url = page.url;
       state.templateUrl = page.path;
       state.parent = page.parent || '';
-      state.controller = page.disableController || function($scope, $stateParams) {
+      state.controller = page.disableController ? '' : function($scope, $stateParams) {
         var params = [];
         angular.forEach($stateParams, function(value, key) {
           params[key] = value;
         });
 
         $scope.params = params;
+        $scope.vars = page;
       }
 
       $stateProvider.state(page.name, state);
