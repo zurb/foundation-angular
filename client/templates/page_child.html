@@ -1,8 +1,32 @@
 ---
-name: page.subpage
-url: /sub
+name: mail.inbox
+url: /inbox
 ---
 <div>
-  <h2>Sub Page</h2>
-  <p>This is a child page</p>
+  <table width="100%">
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>Subject</th>
+        <th width="20%">Read</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Person 1</td>
+        <td>Sample Subject</td>
+        <td><a ui-sref="mail.email({ id: 1 })" class="button small">Go read</a></td>
+      </tr>
+      <tr>
+        <td>Person 2</td>
+        <td>Sample Subject</td>
+        <td><a ui-sref="mail.email({ id: 2 })" class="button small">Go read</a></td>
+      </tr>
+      <tr>
+        <td>Person 3</td>
+        <td>Sample Subject</td>
+        <td><a ui-sref="mail.email({ id: 3 })" class="button small">Go read</a></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
