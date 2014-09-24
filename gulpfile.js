@@ -51,6 +51,10 @@ gulp.task('front-matter', ['copy'], function() {
   ;
 });
 
-gulp.task('default', ['copy', 'front-matter', 'server:start'], function() {
-  gulp.watch('client/**/*.*', ['copy', 'front-matter', server.restart]);
+gulp.task('build', ['copy', 'front-matter'], function() {
+  console.log('Successfully built');
+});
+
+gulp.task('default', ['build', 'server:start'], function() {
+  gulp.watch('client/**/*.*', ['build', server.restart]);
 });
