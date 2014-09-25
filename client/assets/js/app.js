@@ -25,7 +25,7 @@ var app = angular.module('application', ['ui.router'])
           templateUrl: page.path,
           parent: page.parent || '',
           controller: page.controller || 'DefaultController',
-          resolve: { vars: function() { return page } },
+          data: { vars: page },
         };
 
         $stateProvider.state(page.name, state);
@@ -44,7 +44,7 @@ var app = angular.module('application', ['ui.router'])
         angular.forEach(page.children, function(sub) {
           state.views[sub.name + '@' + page.name] = {
             templateUrl: sub.path,
-            resolve: { vars: function() { return sub; } }
+            data: { vars: sub }
             };
         });
 
@@ -53,13 +53,14 @@ var app = angular.module('application', ['ui.router'])
 }]);
 
 angular.module('application')
-  .controller('DefaultController', ['$scope', '$stateParams', 'vars', function($scope, $stateParams, vars) {
+  .controller('DefaultController', ['$scope', '$stateParams', '$state', function($scope, $stateParams, $state) {
           var params = [];
           angular.forEach($stateParams, function(value, key) {
             params[key] = value;
           });
 
           $scope.params = params;
-          $scope.vars = vars;
+          $scope.vars = $state.current.data.vars;
+          console.log($state.current.data.vars, 'state');
         }
     ]);
