@@ -17,7 +17,7 @@ Installation
 Features
 ==================
 
-Gulp will watch for file changes in the `client` directory. Upon change, all files will be copied over to the `build` directory and the webserver will be reloaded.
+Gulp will watch for file changes in the `client` directory. Upon change, all files will be copied over to the `build` directory and the webserver will be reloaded. Note that the build directory will be deleted and recompiled upon each change. This means that any updates to files in the `build` directory will be deleted.
 
 Dynamic Routing
 ===================
@@ -138,4 +138,15 @@ We can then iterate over this array using standard angular conventions:
 
 ````
 <div ng-repeat="email in vars.emails">{{ email }}</div>
+````
+
+This will translate to:
+
+````
+<div>Email 1</div>
+<div>Email 2</div>
+<div>Email 3</div>
+<div>Email 4</div>
+<div>Email 5</div>
+<div>Email 6</div>
 ````
