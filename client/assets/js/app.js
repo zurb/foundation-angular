@@ -7,13 +7,13 @@ var app = angular.module('application', ['ui.router'])
     var complexViews = {};
 
     angular.forEach(dynamicRoutes, function(page) {
-      if (page.hasAbstract == true) {
+      if (page.hasComposed == true) {
         if (!angular.isDefined(complexViews[page.parent])) {
           complexViews[page.parent] = { children: [] };
         }
 
         complexViews[page.parent]['children'].push(page);
-      } else if (page.abstract == true) {
+      } else if (page.composed == true) {
         if(!angular.isDefined(complexViews[page.name])) {
           complexViews[page.name] = { children: [] };
         }
