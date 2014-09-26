@@ -10,7 +10,7 @@ composed: true
   <div class="small-8 large-8 columns">
   <h1>Page</h1>
   <p>Welcome to your mailbox. Do you want to go straight to your <a ui-sref="mail.inbox">Inbox</a> or your <a ui-sref="mail.email({ id: 1})">latest email</a>?</p>
-  <div ui-view></div>
+  <div ng-class=""><div ui-view></div></div>
 </div>
 <div class="row">
   <div ui-view="mail.footer"></div>

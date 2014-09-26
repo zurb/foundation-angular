@@ -61,6 +61,5 @@ angular.module('application')
 
           $scope.params = params;
           $scope.vars = $state.current.data.vars;
-          console.log($state.current.data.vars, 'state');
         }
     ]);
