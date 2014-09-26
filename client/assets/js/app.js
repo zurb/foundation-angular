@@ -36,8 +36,8 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
           url: page.url,
           parent: page.parent || '',
           data: { vars: page },
-          views: { '':
-            { templateUrl: page.path,
+          views: { '': {
+              templateUrl: page.path,
               controller: page.controller || 'DefaultController'
             }
           }
