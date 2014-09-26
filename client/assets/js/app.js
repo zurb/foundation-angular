@@ -12,7 +12,7 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
           complexViews[page.parent] = { children: [] };
         }
 
-        complexViews[page.parent]['children'].push(page);
+        complexViews[page.parent]['children'][page.name] = page;
       } else if (page.composed == true) {
         if(!angular.isDefined(complexViews[page.name])) {
           complexViews[page.name] = { children: [] };
@@ -25,7 +25,7 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
           templateUrl: page.path,
           parent: page.parent || '',
           controller: page.controller || 'DefaultController',
-          data: { vars: page },
+          data: { vars: page }
         };
 
         $stateProvider.state(page.name, state);
@@ -36,15 +36,18 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
         var state = {
           url: page.url,
           parent: page.parent || '',
-          controller: page.controller || 'DefaultController',
-          resolve: { vars: function() { return page; } },
-          views: { '': { templateUrl: page.path } }
+          data: { vars: page },
+          views: { '':
+            { templateUrl: page.path,
+              controller: page.controller || 'DefaultController'
+            }
+          }
         };
 
         angular.forEach(page.children, function(sub) {
           state.views[sub.name + '@' + page.name] = {
             templateUrl: sub.path,
-            data: { vars: sub }
+            controller: page.controller || 'DefaultController',
             };
         });
 
@@ -60,6 +63,11 @@ angular.module('application')
           });
 
           $scope.params = params;
-          $scope.vars = $state.current.data.vars;
+          if($state.current.views) {
+            $scope.vars = $state.current.data.vars;
+            $scope.composed = $state.current.data.vars.children;
+          } else {
+            $scope.vars = $state.current.data.vars;
+          }
         }
     ]);

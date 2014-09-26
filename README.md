@@ -99,8 +99,6 @@ Note that for composable views, you can't use dot-delimited parents, you have to
 
 `<div ui-view="footer"></div>`
 
-And it will show up
-
 ###Controllers
 Angular supports this neat thing called controllers. They can get confusing and so each template gets its own `DefaultController` which can be overriden like so:
 
@@ -150,3 +148,5 @@ This will translate to:
 <div>Email 5</div>
 <div>Email 6</div>
 ````
+
+**Note** Named views are special and unfortunately, their properties can only be accessed through the `composed['name']` where name is the name you specify in a template. The entire mock data object for the parent and all of its composed children is accessible via `vars`.
