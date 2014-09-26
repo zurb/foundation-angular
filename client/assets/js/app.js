@@ -1,4 +1,3 @@
-
 var app = angular.module('application', ['ui.router', 'ngAnimate'])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlProvider) {
 
@@ -9,13 +8,13 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
     angular.forEach(dynamicRoutes, function(page) {
       if (page.hasComposed == true) {
         if (!angular.isDefined(complexViews[page.parent])) {
-          complexViews[page.parent] = { children: [] };
+          complexViews[page.parent] = { children: {} };
         }
 
         complexViews[page.parent]['children'][page.name] = page;
       } else if (page.composed == true) {
         if(!angular.isDefined(complexViews[page.name])) {
-          complexViews[page.name] = { children: [] };
+          complexViews[page.name] = { children: {} };
         }
 
         angular.extend(complexViews[page.name], page);
