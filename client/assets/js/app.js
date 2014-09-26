@@ -74,8 +74,8 @@ angular.module('application')
 ]);
 
 angular.module('application')
-  .filter('slugify', function() {
+  .filter('prepareRoute', function() {
       return function(input) {
-        return input.replace(/\./, '-').toLowerCase();
+        return 'route-' + input.replace(/\./, '-').toLowerCase();
       };
 });
