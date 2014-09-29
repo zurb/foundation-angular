@@ -40,11 +40,11 @@ gulp.task('front-matter', ['copy'], function() {
       config.push(page);
 
       if(page.animationIn) {
-        css.push({ type: 'ng-enter-active', animation: page.animationIn, className: page.className, animationLength: page.animationInLength || '1s'});
+        css.push({ type: 'ng-enter', animation: page.animationIn, className: page.className, animationLength: page.animationInLength || '1s'});
       }
 
       if(page.animationOut) {
-        css.push({ type: 'ng-leave-active', animation: page.animationOut, className: page.className, animationLength: page.animationOutLength || '1s'});
+        css.push({ type: 'ng-leave', animation: page.animationOut, className: page.className, animationLength: page.animationOutLength || '0.5s'});
       }
 
       this.push(file);
@@ -53,7 +53,6 @@ gulp.task('front-matter', ['copy'], function() {
     .pipe(gulp.dest('build/templates'))
     .on('end', function() {
       //routes
-      console.log('animation');
       var appPath = ['build', 'assets', 'js', 'app.js'];
       var data = fs.readFileSync(appPath.join(path.sep));
       fs.writeFileSync(appPath.join(path.sep), 'var dynamicRoutes = ' + JSON.stringify(config) + '; \n' + data);
@@ -63,7 +62,8 @@ gulp.task('front-matter', ['copy'], function() {
       css.forEach(function(style) {
         cssString += '.'+style.type+'.'+style.className+'{' +
                      'animation-name: '+style.animation + ';' +
-                     '  animation-duration: 1s; animation-fill-mode: both;' +
+                     'animation-duration: ' + style.animationLength + ';'+
+                     'animation-fill-mode: both;' +
                      '}';
       });
 
