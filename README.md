@@ -116,6 +116,24 @@ url: /mail/inbox/:id
 
 It will match any URL that follows that pattern (so `/mail/inbox/383828` would match as well as `/mail/inbox/my-email` but not `/mail/inbox/3838/something`).
 
+###Animations
+Angular and the UI router support animations. That means that when you transition from a page to another page, you can CSS animate it. It's easy to do with CSS; however, you can use front matter to register CSS animations:
+
+````
+animationIn: fadeIn
+animationOut: fadeOut
+````
+
+The animation gets registered and compiled into an `animations.css` file. There are two components that play into this:
+
+- Every view element has to have the following `ng-class` value: `<div ng-class="current | prepareRoute" ui-view></div>` the `current` variable comes with the `Defaultcontroller` and `MainController`
+- Animations have to be keyframe animations (class currently not supported)
+
+Additional options:
+
+- `animationOutLength` length of `out` animation
+- `animationInLength` lenght of `in` animation
+
 ###Additional mock data
 
 Now that we have views and controllers out of the way, let's talk about mock data. As I've said, the controller will pass on ALL front matter to the template/view which means that we can add miscellaneous data to the front-matter and access it in the view! The front matter plugin supports standard YAML conventions which means that even arrays are supported! Let's see how we can put this to good use.
