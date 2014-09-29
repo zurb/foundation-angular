@@ -74,6 +74,12 @@ angular.module('application')
 ]);
 
 angular.module('application')
+  .controller('MainController', ['$scope', '$state', function($scope, $state) {
+    $scope.current = $state.current.name;
+  }
+]);
+
+angular.module('application')
   .filter('prepareRoute', function() {
       return function(input) {
         return 'route-' + input.replace(/\./, '-').toLowerCase();

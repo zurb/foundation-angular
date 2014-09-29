@@ -7,7 +7,7 @@ var gulp         = require('gulp'),
     fs           = require('fs')
     autoprefixer = require('gulp-autoprefixer');
 
-gulp.task('server:start', ['front-matter'], function() {
+gulp.task('server:start', ['build'], function() {
   server.listen( { path: 'app.js' });
 });
 
@@ -16,7 +16,7 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('copy', ['clean'], function() {
-  gulp.src(['./client/**/*.*', '!./client/templates/**/*.*'], { base: './client/' } )
+  return gulp.src(['./client/**/*.*', '!./client/templates/**/*.*'], { base: './client/' } )
     .pipe(gulp.dest('build'));
 });
 
@@ -24,7 +24,7 @@ gulp.task('front-matter', ['copy'], function() {
   var config = [];
   var css    = [];
 
-  gulp.src('./client/templates/*.html')
+  return gulp.src('./client/templates/*.html')
     .pipe(frontMatter({
       property: 'meta',
       remove: true
@@ -40,11 +40,11 @@ gulp.task('front-matter', ['copy'], function() {
       config.push(page);
 
       if(page.animationIn) {
-        css.push({ type: 'ng-enter', animation: page.animationIn, className: page.className, animationLength: page.animationInLength || '1s'});
+        css.push({ type: 'ng-enter-active', animation: page.animationIn, className: page.className, animationLength: page.animationInLength || '1s'});
       }
 
       if(page.animationOut) {
-        css.push({ type: 'ng-leave', animation: page.animationOut, className: page.className, animationLength: page.animationOutLength || '1s'});
+        css.push({ type: 'ng-leave-active', animation: page.animationOut, className: page.className, animationLength: page.animationOutLength || '1s'});
       }
 
       this.push(file);
@@ -53,36 +53,35 @@ gulp.task('front-matter', ['copy'], function() {
     .pipe(gulp.dest('build/templates'))
     .on('end', function() {
       //routes
+      console.log('animation');
       var appPath = ['build', 'assets', 'js', 'app.js'];
-      fs.readFile(appPath.join(path.sep), function(err, data) {
-        fs.writeFile(appPath.join(path.sep), 'var dynamicRoutes = ' + JSON.stringify(config) + '; \n' + data, function(err, d) {
-          if (err) return console.log(err);
-        });
-      });
-
+      var data = fs.readFileSync(appPath.join(path.sep));
+      fs.writeFileSync(appPath.join(path.sep), 'var dynamicRoutes = ' + JSON.stringify(config) + '; \n' + data);
       //animation
       var cssPath = ['build', 'assets', 'css', 'animations.css'];
       var cssString = '';
       css.forEach(function(style) {
         cssString += '.'+style.type+'.'+style.className+'{' +
                      'animation-name: '+style.animation + ';' +
-                     '  animation-duration: 1s; animation-fill-mode: both; color: blue;' +
+                     '  animation-duration: 1s; animation-fill-mode: both;' +
                      '}';
       });
 
-      fs.writeFile(cssPath.join(path.sep), cssString, function(err, d) {
-        if (err) return console.log(err);
-      });
-    });
+      fs.writeFileSync(cssPath.join(path.sep), cssString);
+    })
   ;
 });
 
-gulp.task('prefix', ['copy', 'front-matter'], function() {
-  gulp.src('./build/assets/**/*.css')
+gulp.task('prefix', ['clean', 'copy', 'front-matter'], function() {
+  return gulp.src('./build/assets/**/*.css')
     .pipe(autoprefixer({
-      browsers: ['last 3 version']
+      browsers: ['last 3 versions']
     }))
-    .pipe(gulp.dest('build/'))
+    .pipe(through.obj(function(file, enc, callback) {
+      this.push(file);
+      return callback();
+    }))
+    .pipe(gulp.dest('build/assets'))
   ;
 });
 
@@ -91,5 +90,5 @@ gulp.task('build', ['copy', 'front-matter', 'prefix'], function() {
 });
 
 gulp.task('default', ['build', 'server:start'], function() {
-  gulp.watch('client/**/*.*', ['build', server.restart]);
+  gulp.watch('./client/**/*.*', ['build', server.restart]);
 });

@@ -31,8 +31,8 @@
         </section>
       </nav>
     </div>
-    <div class="row">
-      <div ui-view></div>
+    <div class="row" ng-controller="MainController">
+      <div ng-class="current | prepareRoute" ui-view></div>
     </div>
   </body>
 </html>
