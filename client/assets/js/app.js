@@ -70,6 +70,8 @@ angular.module('application')
           animation = scope.vars.animationIn;
           element.addClass(animation + ' animated');
           element.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            element.removeClass(animation);
+            element.removeClass('animated');
             done();
           });
           done();
@@ -84,10 +86,12 @@ angular.module('application')
       leave: function(element, done) {
         var scope = element.scope();
         var animation = '';
-        if(scope.vars.animationOut) {
+        if(scope.vars && scope.vars.animationOut) {
           animation = scope.vars.animationOut;
           element.addClass(animation + ' animated');
           element.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            element.removeClass(animation);
+            element.removeClass('animated');
             done();
           });
         } else {

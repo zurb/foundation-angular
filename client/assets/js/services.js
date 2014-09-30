@@ -10,10 +10,6 @@ angular.module('application')
     return {
       prepareRoute: function(input) {
         return 'route-' + input.replace(/\./, '-').toLowerCase();
-      },
-      cleanRoute: function(input) {
-        return input.replace('route-', '').replace(/-/, '.');
-
       }
     }
 });
