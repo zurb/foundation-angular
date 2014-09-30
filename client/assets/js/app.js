@@ -1,3 +1,10 @@
+window.jQuery = window.$ = function(el) {
+  if(typeof el == "string" && el.charAt(0) != '<') {
+    el = document.querySelectorAll(el);
+  }
+  return angular.element(el);
+}
+
 var app = angular.module('application', ['ui.router', 'ngAnimate'])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlProvider) {
 
@@ -24,7 +31,7 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
           templateUrl: page.path,
           parent: page.parent || '',
           controller: page.controller || 'DefaultController',
-          data: { vars: page }
+          data: { vars: page },
         };
 
         $stateProvider.state(page.name, state);
@@ -38,7 +45,7 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
           data: { vars: page },
           views: { '': {
               templateUrl: page.path,
-              controller: page.controller || 'DefaultController'
+              controller: page.controller || 'DefaultController',
             }
           }
         };
@@ -55,33 +62,43 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
 }]);
 
 angular.module('application')
-  .controller('DefaultController', ['$scope', '$stateParams', '$state', function($scope, $stateParams, $state) {
-    var params = [];
-    angular.forEach($stateParams, function(value, key) {
-      params[key] = value;
-    });
+  .animation('.ui-animation', ['$state', 'Utils', function($state, u) {
+    return {
+      enter: function(element, done) {
+        var scope = element.scope();
+        if(scope.vars.animationIn) {
+          animation = scope.vars.animationIn;
+          element.addClass(animation + ' animated');
+          element.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            done();
+          });
+          done();
+        } else {
+          done();
+        }
 
-    $scope.params = params;
-    $scope.current = $state.current.name;
+        return function(isCancelled) {
 
-    if($state.current.views) {
-      $scope.vars = $state.current.data.vars;
-      $scope.composed = $state.current.data.vars.children;
-    } else {
-      $scope.vars = $state.current.data.vars;
+        }
+      },
+      leave: function(element, done) {
+        var scope = element.scope();
+        var animation = '';
+        if(scope.vars.animationOut) {
+          animation = scope.vars.animationOut;
+          element.addClass(animation + ' animated');
+          element.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            done();
+          });
+        } else {
+          done();
+        }
+
+          return function(isCancelled) {
+
+          }
+       }
     }
-  }
-]);
 
-angular.module('application')
-  .controller('MainController', ['$scope', '$state', function($scope, $state) {
-    $scope.current = $state.current.name;
-  }
-]);
 
-angular.module('application')
-  .filter('prepareRoute', function() {
-      return function(input) {
-        return 'route-' + input.replace(/\./, '-').toLowerCase();
-      };
-});
+  }]);
