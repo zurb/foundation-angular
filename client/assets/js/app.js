@@ -56,6 +56,8 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
 
 angular.module('application')
   .animation('.ui-animation', ['$state', function($state) {
+    var events = ['webkitAnimationEnd', 'mozAnimationEnd', 'MSAnimationEnd', 'oanimationend', 'animationend',
+                  'webkitTransitionEnd', 'otransitionend', 'transitionend'];
     return {
       enter: function(element, done) {
         var scope = element.scope();
@@ -63,9 +65,15 @@ angular.module('application')
         if(scope.vars && scope.vars.animationIn) {
           animationIn = scope.vars.animationIn;
           animationOut = scope.vars.animationOut || '';
+
+          //reset possible failed animations and bugs
           element.removeClass(animationIn + ' ' + animationOut);
-          element.addClass(animationIn + ' animated');
-          element.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+
+          element.addClass(animationOut);
+          element.addClass('animated');
+
+          element.one(events.join(' '), function(){
+            //cleanup
             element.removeClass(animationIn + ' ' + animationOut);
             done();
           });
@@ -83,9 +91,15 @@ angular.module('application')
         if(scope.vars && scope.vars.animationOut) {
           animationIn = scope.vars.animationIn || '';
           animationOut = scope.vars.animationOut;
+
+          //reset possible failed animations and bugs
           element.removeClass(animationIn + ' ' + animationOut);
-          element.addClass(animationOut + ' animated');
-          element.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+
+          element.addClass(animationOut);
+          element.addClass('animated');
+
+          element.one(events.join(' '), function(){
+            //cleanup
             element.removeClass(animationIn + ' ' + animationOut);
             done();
           });
