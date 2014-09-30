@@ -1,10 +1,3 @@
-window.jQuery = window.$ = function(el) {
-  if(typeof el == "string" && el.charAt(0) != '<') {
-    el = document.querySelectorAll(el);
-  }
-  return angular.element(el);
-}
-
 var app = angular.module('application', ['ui.router', 'ngAnimate'])
     .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlProvider) {
 
@@ -62,19 +55,20 @@ var app = angular.module('application', ['ui.router', 'ngAnimate'])
 }]);
 
 angular.module('application')
-  .animation('.ui-animation', ['$state', 'Utils', function($state, u) {
+  .animation('.ui-animation', ['$state', function($state) {
     return {
       enter: function(element, done) {
         var scope = element.scope();
-        if(scope.vars.animationIn) {
-          animation = scope.vars.animationIn;
-          element.addClass(animation + ' animated');
+
+        if(scope.vars && scope.vars.animationIn) {
+          animationIn = scope.vars.animationIn;
+          animationOut = scope.vars.animationOut || '';
+          element.removeClass(animationIn + ' ' + animationOut);
+          element.addClass(animationIn + ' animated');
           element.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-            element.removeClass(animation);
-            element.removeClass('animated');
+            element.removeClass(animationIn + ' ' + animationOut);
             done();
           });
-          done();
         } else {
           done();
         }
@@ -85,13 +79,14 @@ angular.module('application')
       },
       leave: function(element, done) {
         var scope = element.scope();
-        var animation = '';
+
         if(scope.vars && scope.vars.animationOut) {
-          animation = scope.vars.animationOut;
-          element.addClass(animation + ' animated');
+          animationIn = scope.vars.animationIn || '';
+          animationOut = scope.vars.animationOut;
+          element.removeClass(animationIn + ' ' + animationOut);
+          element.addClass(animationOut + ' animated');
           element.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-            element.removeClass(animation);
-            element.removeClass('animated');
+            element.removeClass(animationIn + ' ' + animationOut);
             done();
           });
         } else {

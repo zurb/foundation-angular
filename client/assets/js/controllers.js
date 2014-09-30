@@ -15,8 +15,6 @@ angular.module('application')
     } else {
       $scope.vars = $state.current.data.vars;
     }
-
-    $scope.animationClass = $scope.vars.animationIn;
   }
 ]);
 
@@ -24,9 +22,5 @@ angular.module('application')
   .controller('MainController', ['$scope', '$state', 'Utils', function($scope, $state, u) {
     $scope.current = $state.current.name;
     $scope.currentSlug = u.prepareRoute($state.current.name);
-    $scope.animationClass = '';
-    if ($state.current.name) {
-      $scope.animationClass = $state.current.data.vars.animationIn || '';
-    }
   }
 ]);
